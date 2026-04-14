@@ -1,8 +1,9 @@
 # 🚀 Proyecto: NIGHT CLASS (Versión Final)
 
 **Miembros del Equipo:**
-* [Nombre Alumno/a 1]
-* [Nombre Alumno/a 2]
+* Victor
+* Ana
+* Moisés
 
 ---
 
