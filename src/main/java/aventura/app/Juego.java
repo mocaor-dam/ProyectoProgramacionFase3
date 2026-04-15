@@ -6,9 +6,7 @@ import aventura.exceptions.InventarioLlenoException;
 import aventura.exceptions.ObjetoNoCompatibleException;
 import aventura.io.MiEntradaSalida;
 
-import javax.swing.*;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
 
@@ -24,7 +22,7 @@ public class Juego {
     private String descripcionJuego;
 
     // El mapa de habitaciones.
-//    private Habitacion[] habitaciones;
+
     private Map<String, Habitacion> habitaciones;
 
     // El inventario ahora se ha movido a la clase Jugador
@@ -41,7 +39,7 @@ public class Juego {
      */
     public Juego(Jugador jugador) {
         // Inicialización del mapa de habitaciones
-//        habitaciones = new Habitacion[3]; Cambia el tamaño según el número de habitaciones que tengas
+
         habitaciones = new HashMap<>();
         this.jugador = jugador;
         inicializarJuego();
@@ -85,8 +83,8 @@ public class Juego {
         try {
             aula105.agregarObjeto(new Nota("Nota", "Una nota escrita a mano", true, "La llave está bajo la estantería."));
             aula105.agregarObjeto(new Mueble("Escritorio", "Un escritorio con varios papeles encima.", true));
-            Llave llavePequeña = new Llave("Llave pequeña", "Una pequeña llave de metal.", true, "LLAVE123");
-            aula105.agregarObjeto(new Contenedor("Cajón del escritorio", "Un cajón de madera que parece cerrado.", true, llavePequeña));
+            Llave llavePequenia = new Llave("Llave pequeña", "Una pequeña llave de metal.", true, "LLAVE123");
+            aula105.agregarObjeto(new Contenedor("Cajón del escritorio", "Un cajón de madera que parece cerrado.", true, llavePequenia));
             aula105.agregarObjeto(new Contenedor("Cofre antiguo", "Un cofre de aspecto antiguo con un candado.", true, "LLAVEYZ", new Item("Mapa", "Un mapa del instituto.", true)));
             habitaciones.put("aula105", aula105);
         } catch (AventuraException e) {
@@ -107,7 +105,7 @@ public class Juego {
         System.out.println(descripcionJuego);
 
         //Muestra la descripción de la primera habitación
-        System.out.println(getHabitacionActual().mirar());
+        System.out.println(jugador.getHabitacionActual().mirar());
 
         while (jugando) {
 
@@ -119,8 +117,7 @@ public class Juego {
             switch (comando) {
                 case "mirar" -> mostrarInfoHabitacion();
                 case "inventario" -> mostrarObjetosInventario();
-                case "ir izquierda" -> cmdIrIzquierda();
-                case "ir derecha" -> cmdIrDerecha();
+                case "ir" -> jugador.ir();
                 case "coger" -> cmdCoger();
                 case "examinar" -> cmdExaminar();
                 case "abrir" -> cmdAbrir();
@@ -240,7 +237,7 @@ public class Juego {
                         // El inventario está lleno, dejamos el objeto en la habitación
                         System.out.println("¡Cuidado! Tu inventario estaba lleno y el objeto cayó al suelo.");
                         try {
-                            getHabitacionActual().agregarObjeto(resultado);
+                            jugador.getHabitacionActual().agregarObjeto(resultado);
                             System.out.println("El nuevo objeto está en la habitación actual.");
                         } catch (AventuraException ex) {
                             System.out.println("La habitación también está llena... el objeto se ha perdido en el limbo (Bug).");
@@ -252,7 +249,6 @@ public class Juego {
 
             } catch (ObjetoNoCompatibleException e) {
                 System.out.println(e.getMessage());
-                return;
             } catch (AventuraException e) {
                 System.out.println(e.getMessage());
             }
@@ -282,7 +278,7 @@ public class Juego {
      * Muestra la información de la habitación actual.
      */
     private void mostrarInfoHabitacion() {
-        System.out.println(getHabitacionActual().mirar());
+        System.out.println(jugador.getHabitacionActual().mirar());
 
     }
 
@@ -295,22 +291,18 @@ public class Juego {
         assert objetoACoger != null : "El objeto a coger no puede ser null";
 
         boolean objetoEncontrado = false;
-//        for (int i = 0; i < getHabitacionActual().getObjetos().length && !objetoEncontrado; i++) {
-//            if (objetoACoger.equals(getHabitacionActual().getObjetos())) {
-//                try {
-//                    objetoEncontrado = true;
-//                    jugador.coger(objetoACoger);
-//                    getHabitacionActual().getObjetos()[i] = null; // Eliminar el objeto de la habitación
-//                    System.out.println("Has cogido " + objetoACoger.getNombre() + " y lo has añadido a tu inventario.");
-//                } catch (AventuraException e) {
-//                    System.out.println(e.getMessage());
-//                }
-//            }
-        for (Objeto i: habitaciones.get(jugador.getHabitacionActual()).getObjetos()){
-            if (i.equals(objetoACoger)){
-                habitaciones.get()
+        for (Objeto i : habitaciones.get(jugador.getHabitacionActual()).getObjetos()) {
+            if (i.equals(objetoACoger)) {
+                try {
+                    jugador.coger(objetoACoger);
+                } catch (AventuraException e) {
+                    System.out.println(e.getMessage());
+                }
+                habitaciones.get(jugador.getHabitacionActual()).getObjetos().remove(i);
+            objetoEncontrado=true;
             }
         }
+
         if (!objetoEncontrado) {
             System.out.println("No hay ningún objeto llamado " + objetoACoger.getNombre() + " en esta habitación.");
         }
@@ -377,7 +369,7 @@ public class Juego {
         System.out.print("Objetos en la habitación: ");
         boolean hayObjetos = false;
         boolean hayMasDeUnObjeto = false;
-        for (Objeto objeto : getHabitacionActual().getObjetos()) {
+        for (Objeto objeto : habitaciones.containsKey(jugador.getHabitacionActual())) {
             if (objeto != null && objeto.isVisible()) {
                 hayObjetos = true;
                 System.out.print(hayMasDeUnObjeto ? ", " + objeto : objeto);
@@ -396,12 +388,7 @@ public class Juego {
      * @return true si hay al menos un objeto, false si no hay ninguno.
      */
     private boolean hayObjetosEnHabitacion() {
-        for (Objeto objeto : getHabitacionActual().getObjetos()) {
-            if (objeto != null) {
-                return true;
-            }
-        }
-        return false;
+        return !jugador.getHabitacionActual().getObjetos().isEmpty();
     }
 
     /**
@@ -439,7 +426,7 @@ public class Juego {
         System.out.print("Contenedores disponibles: ");
         boolean hayObjetos = false;
         boolean hayMasDeUnObjeto = false;
-        for (Objeto objeto : getHabitacionActual().getObjetos()) {
+        for (Objeto objeto : jugador.getHabitacionActual().getObjetos()) {
             if (objeto instanceof Abrible) {
                 hayObjetos = true;
                 System.out.print(hayMasDeUnObjeto ? ", " + objeto : objeto);
@@ -467,7 +454,7 @@ public class Juego {
      */
     private Objeto buscarObjeto(String nombre) {
         // 1. Buscamos en la habitación (Prioridad 1: Lo que veo)
-        Objeto encontrado = getHabitacionActual().buscar(nombre);
+        Objeto encontrado = jugador.getHabitacionActual().buscar(nombre);
 
         if (encontrado != null) {
             return encontrado;
@@ -482,9 +469,7 @@ public class Juego {
      *
      * @return La habitación en la que se encuentra el jugador.
      */
-    private Habitacion getHabitacionActual() {
-        return habitaciones[jugador.getHabitacionActual()];
-    }
+
 
     /**
      * Elimina un objeto del juego, ya sea que esté en la habitación o en el inventario.
@@ -494,7 +479,7 @@ public class Juego {
         // Intentamos borrar del inventario
         jugador.eliminarDeInventario(obj);
         // Intentamos borrar de la habitación
-        getHabitacionActual().eliminarObjeto(obj);
+        jugador.getHabitacionActual().eliminarObjeto(obj);
     }
 
 }

@@ -72,4 +72,10 @@ public class Habitacion {
         }
         return null;
     }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+
 }
