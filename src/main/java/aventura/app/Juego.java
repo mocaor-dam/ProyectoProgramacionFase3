@@ -105,7 +105,7 @@ public class Juego {
         System.out.println(descripcionJuego);
 
         //Muestra la descripción de la primera habitación
-        System.out.println(jugador.getHabitacionActual().mirar());
+        System.out.println(habitaciones.get(jugador.getHabitacionActual()).getDescripcion());
 
         while (jugando) {
 
@@ -237,7 +237,7 @@ public class Juego {
                         // El inventario está lleno, dejamos el objeto en la habitación
                         System.out.println("¡Cuidado! Tu inventario estaba lleno y el objeto cayó al suelo.");
                         try {
-                            jugador.getHabitacionActual().agregarObjeto(resultado);
+                            habitaciones.get(jugador.getHabitacionActual()).agregarObjeto(resultado);
                             System.out.println("El nuevo objeto está en la habitación actual.");
                         } catch (AventuraException ex) {
                             System.out.println("La habitación también está llena... el objeto se ha perdido en el limbo (Bug).");
@@ -278,9 +278,9 @@ public class Juego {
      * Muestra la información de la habitación actual.
      */
     private void mostrarInfoHabitacion() {
-        System.out.println(jugador.getHabitacionActual().mirar());
-
+        System.out.println(habitaciones.get(jugador.getHabitacionActual()).getDescripcion());
     }
+
 
     /**
      * Procesa el comando de coger un objeto de la habitación actual.
@@ -299,7 +299,7 @@ public class Juego {
                     System.out.println(e.getMessage());
                 }
                 habitaciones.get(jugador.getHabitacionActual()).getObjetos().remove(i);
-            objetoEncontrado=true;
+                objetoEncontrado = true;
             }
         }
 
@@ -369,14 +369,13 @@ public class Juego {
         System.out.print("Objetos en la habitación: ");
         boolean hayObjetos = false;
         boolean hayMasDeUnObjeto = false;
-        for (Objeto objeto : habitaciones.containsKey(jugador.getHabitacionActual())) {
-            if (objeto != null && objeto.isVisible()) {
-                hayObjetos = true;
+        for (Objeto objeto : habitaciones.get(jugador.getHabitacionActual()).getObjetos()) {
+            if (objeto.isVisible()) {
                 System.out.print(hayMasDeUnObjeto ? ", " + objeto : objeto);
                 hayMasDeUnObjeto = true;
             }
         }
-        if (!hayObjetos) {
+        if (habitaciones.get(jugador.getHabitacionActual()).getObjetos().isEmpty()) {
             System.out.print("No hay objetos.");
         }
         System.out.println();
@@ -388,7 +387,7 @@ public class Juego {
      * @return true si hay al menos un objeto, false si no hay ninguno.
      */
     private boolean hayObjetosEnHabitacion() {
-        return !jugador.getHabitacionActual().getObjetos().isEmpty();
+        return !habitaciones.get(jugador.getHabitacionActual()).getObjetos().isEmpty();
     }
 
     /**
@@ -426,7 +425,7 @@ public class Juego {
         System.out.print("Contenedores disponibles: ");
         boolean hayObjetos = false;
         boolean hayMasDeUnObjeto = false;
-        for (Objeto objeto : jugador.getHabitacionActual().getObjetos()) {
+        for (Objeto objeto : habitaciones.get(jugador.getHabitacionActual()).getObjetos()) {
             if (objeto instanceof Abrible) {
                 hayObjetos = true;
                 System.out.print(hayMasDeUnObjeto ? ", " + objeto : objeto);
@@ -454,7 +453,7 @@ public class Juego {
      */
     private Objeto buscarObjeto(String nombre) {
         // 1. Buscamos en la habitación (Prioridad 1: Lo que veo)
-        Objeto encontrado = jugador.getHabitacionActual().buscar(nombre);
+        Objeto encontrado = habitaciones.get(jugador.getHabitacionActual()).buscar(nombre);
 
         if (encontrado != null) {
             return encontrado;
@@ -479,7 +478,7 @@ public class Juego {
         // Intentamos borrar del inventario
         jugador.eliminarDeInventario(obj);
         // Intentamos borrar de la habitación
-        jugador.getHabitacionActual().eliminarObjeto(obj);
+        habitaciones.get(jugador.getHabitacionActual()).eliminarObjeto(obj);
     }
 
 }
