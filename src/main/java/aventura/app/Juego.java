@@ -6,6 +6,7 @@ import aventura.exceptions.InventarioLlenoException;
 import aventura.exceptions.ObjetoNoCompatibleException;
 import aventura.io.MiEntradaSalida;
 
+import java.io.IOException;
 import java.util.Locale;
 
 /**
@@ -85,6 +86,14 @@ public class Juego {
     public static void main(String[] args) {
         Juego juego = new Juego(new Jugador("Jugador1"));
         juego.iniciar();
+
+
+
+        try {
+            Migrador.migrador(juego.descripcionJuego, juego.habitaciones);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println("¡Gracias por jugar!");
 
