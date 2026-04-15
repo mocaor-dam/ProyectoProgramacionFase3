@@ -510,4 +510,22 @@ public class Juego {
         getHabitacionActual().eliminarObjeto(obj);
     }
 
+
+    //Getters y Setters
+
+    public String getDescripcionJuego() {
+        return descripcionJuego;
+    }
+
+    public void setDescripcionJuego(String descripcionJuego) {
+        this.descripcionJuego = descripcionJuego;
+    }
+
+    public Habitacion[] getHabitaciones() {
+        return habitaciones;
+    }
+
+    public void setHabitaciones(Habitacion[] habitaciones) {
+        this.habitaciones = habitaciones;
+    }
 }
