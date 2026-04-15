@@ -6,7 +6,11 @@ import aventura.exceptions.InventarioLlenoException;
 import aventura.exceptions.ObjetoNoCompatibleException;
 import aventura.io.MiEntradaSalida;
 
+import javax.swing.*;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Clase principal del juego "Tu Propia Aventura".
@@ -20,7 +24,8 @@ public class Juego {
     private String descripcionJuego;
 
     // El mapa de habitaciones.
-    private Habitacion[] habitaciones;
+//    private Habitacion[] habitaciones;
+    private Map<String, Habitacion> habitaciones;
 
     // El inventario ahora se ha movido a la clase Jugador
 
@@ -36,9 +41,17 @@ public class Juego {
      */
     public Juego(Jugador jugador) {
         // Inicialización del mapa de habitaciones
-        habitaciones = new Habitacion[3]; // Cambia el tamaño según el número de habitaciones que tengas
+//        habitaciones = new Habitacion[3]; Cambia el tamaño según el número de habitaciones que tengas
+        habitaciones = new HashMap<>();
         this.jugador = jugador;
         inicializarJuego();
+    }
+
+    public static void main(String[] args) {
+        Juego juego = new Juego(new Jugador("Jugador1"));
+        juego.iniciar();
+        System.out.println("¡Gracias por jugar!");
+
     }
 
     /**
@@ -55,7 +68,7 @@ public class Juego {
             aula103.agregarObjeto(new Mueble("Estantería", "Una estantería llena de libros y cuadernos.", true));
             aula103.agregarObjeto(new Item("Llave", "Una llave pequeña de metal.", true));
             aula103.agregarObjeto(new MangoRotoLlave());
-            habitaciones[0] = aula103;
+            habitaciones.put("aula103", aula103);
         } catch (AventuraException e) {
             System.err.println("Error al agregar objeto a la habitación: " + e.getMessage());
         }
@@ -63,7 +76,7 @@ public class Juego {
         Habitacion pasillo = new Habitacion("El pasillo principal. Hay puertas a la DERECHA y a la IZQUIERDA.");
         try {
             pasillo.agregarObjeto(new Contenedor("Taquilla", "Una taquilla metálica cerrada.", true, "LLAVE123", new PaloRotoLlave()));
-            habitaciones[1] = pasillo;
+            habitaciones.put("pasillo", pasillo);
         } catch (AventuraException e) {
             System.err.println("Error al agregar objeto a la habitación: " + e.getMessage());
         }
@@ -75,19 +88,10 @@ public class Juego {
             Llave llavePequeña = new Llave("Llave pequeña", "Una pequeña llave de metal.", true, "LLAVE123");
             aula105.agregarObjeto(new Contenedor("Cajón del escritorio", "Un cajón de madera que parece cerrado.", true, llavePequeña));
             aula105.agregarObjeto(new Contenedor("Cofre antiguo", "Un cofre de aspecto antiguo con un candado.", true, "LLAVEYZ", new Item("Mapa", "Un mapa del instituto.", true)));
-            habitaciones[2] = aula105;
+            habitaciones.put("aula105", aula105);
         } catch (AventuraException e) {
             System.err.println("Error al agregar objeto a la habitación: " + e.getMessage());
         }
-    }
-
-
-    public static void main(String[] args) {
-        Juego juego = new Juego(new Jugador("Jugador1"));
-        juego.iniciar();
-
-        System.out.println("¡Gracias por jugar!");
-
     }
 
     public void iniciar() {
@@ -132,30 +136,8 @@ public class Juego {
         }
     }
 
-    /**
-     * Mueve al jugador a la habitación de la izquierda si es posible.
-     */
-    private void cmdIrIzquierda() {
-        if (jugador.getHabitacionActual() > 0) {
-            jugador.setHabitacionActual(jugador.getHabitacionActual() - 1);
-            System.out.println("Te has movido a la habitación de la izquierda.");
-            mostrarInfoHabitacion();
-        } else {
-            System.out.println("No puedes ir más a la izquierda.");
-        }
-    }
-
-    /**
-     * Mueve al jugador a la habitación de la derecha si es posible.
-     */
-    private void cmdIrDerecha() {
-        if (jugador.getHabitacionActual() < habitaciones.length - 1) {
-            jugador.setHabitacionActual(jugador.getHabitacionActual() + 1);
-            System.out.println("Te has movido a la habitación de la derecha.");
-            mostrarInfoHabitacion();
-        } else {
-            System.out.println("No puedes ir más a la derecha.");
-        }
+    private boolean ir() {
+        return false;
     }
 
     /**
@@ -174,8 +156,7 @@ public class Juego {
         Objeto objeto = buscarObjeto(objetoACoger);
         if (objeto == null) {
             System.out.println("No se encontró ningún objeto llamado " + objetoACoger + ".");
-        }
-        else {
+        } else {
             procesarComandoCoger(objeto);
         }
     }
@@ -227,7 +208,7 @@ public class Juego {
         String objeto1Nombre = MiEntradaSalida.solicitarCadena("Primer objeto: ").trim();
         Objeto objeto1 = buscarObjeto(objeto1Nombre);
 
-        if (objeto1 == null){
+        if (objeto1 == null) {
             System.out.printf("No se encontró %s%n", objeto1Nombre);
             return;
         }
@@ -307,22 +288,27 @@ public class Juego {
 
     /**
      * Procesa el comando de coger un objeto de la habitación actual.
+     *
      * @param objetoACoger El objeto que el jugador desea coger.
      */
     private void procesarComandoCoger(Objeto objetoACoger) {
         assert objetoACoger != null : "El objeto a coger no puede ser null";
 
         boolean objetoEncontrado = false;
-        for (int i = 0; i < getHabitacionActual().getObjetos().length && !objetoEncontrado; i++) {
-            if (objetoACoger.equals(getHabitacionActual().getObjetos()[i])) {
-                try {
-                    objetoEncontrado = true;
-                    jugador.coger(objetoACoger);
-                    getHabitacionActual().getObjetos()[i] = null; // Eliminar el objeto de la habitación
-                    System.out.println("Has cogido " + objetoACoger.getNombre() + " y lo has añadido a tu inventario.");
-                } catch (AventuraException e) {
-                    System.out.println(e.getMessage());
-                }
+//        for (int i = 0; i < getHabitacionActual().getObjetos().length && !objetoEncontrado; i++) {
+//            if (objetoACoger.equals(getHabitacionActual().getObjetos())) {
+//                try {
+//                    objetoEncontrado = true;
+//                    jugador.coger(objetoACoger);
+//                    getHabitacionActual().getObjetos()[i] = null; // Eliminar el objeto de la habitación
+//                    System.out.println("Has cogido " + objetoACoger.getNombre() + " y lo has añadido a tu inventario.");
+//                } catch (AventuraException e) {
+//                    System.out.println(e.getMessage());
+//                }
+//            }
+        for (Objeto i: habitaciones.get(jugador.getHabitacionActual()).getObjetos()){
+            if (i.equals(objetoACoger)){
+                habitaciones.get()
             }
         }
         if (!objetoEncontrado) {
@@ -332,6 +318,7 @@ public class Juego {
 
     /**
      * Procesa el comando de abrir un contenedor.
+     *
      * @param objeto El objeto que el jugador desea abrir.
      */
     private void procesarComandoAbrir(Objeto objeto) {
@@ -361,8 +348,7 @@ public class Juego {
             if (respuesta.esExito()) {
                 if (abrible.getContenido() == null) {
                     System.out.println("El contenedor está vacío.");
-                }
-                else {
+                } else {
                     System.out.println("Has encontrado: " + abrible.getContenido().getNombre());
                     try {
                         //TODO: Si hubiera más de un objeto dentro, habría que implementar un bucle aquí o hacer que el contenido sea una lista de objetos.
@@ -493,6 +479,7 @@ public class Juego {
 
     /**
      * Obtiene la habitación actual del jugador.
+     *
      * @return La habitación en la que se encuentra el jugador.
      */
     private Habitacion getHabitacionActual() {
