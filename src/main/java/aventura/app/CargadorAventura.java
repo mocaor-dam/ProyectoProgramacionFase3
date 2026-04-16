@@ -1,6 +1,9 @@
 package aventura.app;
 
+import aventura.domain.Objeto;
+import aventura.domain.ObjetoAdapter;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +15,11 @@ public class CargadorAventura {
     private Gson gson;
     private Path directorioBase;
     private Path archivoAventura;
+
+    public CargadorAventura() {
+        this.gson = new GsonBuilder().setPrettyPrinting()
+                .registerTypeAdapter(Objeto.class,  new ObjetoAdapter()).create();
+    }
 
     public void cargarConfiguracion(){
         Properties config = new Properties();
@@ -39,5 +47,11 @@ public class CargadorAventura {
 
     }
 
+    public AventuraConfig cargarMundoBase() throws IOException {
+        try (BufferedReader reader = Files.newBufferedReader(archivoAventura)){
+            //Aqui pedimos a Gson que convierta el contenido del reader en un objeto de la clase AventuraConfig
+            return gson.fromJson(reader, AventuraConfig.class);
+        }
+    }
 
 }
