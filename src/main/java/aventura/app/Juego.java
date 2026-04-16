@@ -28,6 +28,8 @@ public class Juego {
     // Variable que guarda la posición actual del jugador
     private Jugador jugador;
 
+    private AventuraConfig configuracion;
+
     // --- FIN DE LA DEFINICIÓN DE DATOS ---
 
     /**
@@ -35,11 +37,12 @@ public class Juego {
      *
      * @param jugador El jugador que participa en el juego.
      */
-    public Juego(Jugador jugador) {
+    public Juego(Jugador jugador, AventuraConfig configuracion) {
         // Inicialización del mapa de habitaciones
         habitaciones = new Habitacion[3]; // Cambia el tamaño según el número de habitaciones que tengas
         this.jugador = jugador;
         inicializarJuego();
+        this.descripcionJuego = configuracion.getDescripcion();
     }
 
     /**
@@ -84,12 +87,18 @@ public class Juego {
 
 
     public static void main(String[] args) {
-        Juego juego = new Juego(new Jugador("Jugador1"));
-        juego.iniciar();
 
+        CargadorAventura cargador = new CargadorAventura();
+        AventuraConfig config = null;
 
 
         try {
+
+            cargador.cargarConfiguracion();
+            config = cargador.cargarMundoBase();
+
+            Juego juego = new Juego(new Jugador("Jugador1"), config);
+            juego.iniciar();
             Migrador.migrador(juego.descripcionJuego, juego.habitaciones);
         } catch (IOException e) {
             System.out.println(e.getMessage());
