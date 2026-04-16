@@ -1,11 +1,12 @@
 package aventura.domain;
 
 import aventura.exceptions.AventuraException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Habitacion {
-    private static final int MAX_OBJETOS = 5;
     private String descripcion;
-    private Objeto[] objetos; // Array de objetos reales, no Strings
+    private List<Objeto> objetos; // Array de objetos reales, no Strings
 
     /**
      * Constructor de la clase Habitacion.
@@ -13,7 +14,7 @@ public class Habitacion {
      */
     public Habitacion(String desc) {
         this.descripcion = desc;
-        this.objetos = new Objeto[MAX_OBJETOS];
+        objetos=new LinkedList<>();
     }
 
     /**
@@ -23,16 +24,7 @@ public class Habitacion {
      */
     public void agregarObjeto(Objeto obj) throws AventuraException {
         // Lógica para añadir en el primer hueco null
-        boolean added = false;
-        for(int i = 0; i < objetos.length; i++) {
-            if(objetos[i] == null) {
-                objetos[i] = obj;
-                return;
-            }
-        }
-        if(!added) {
-            throw new AventuraException("No se puede agregar un objeto");
-        }
+       objetos.add(obj);
     }
 
     /**
@@ -41,14 +33,7 @@ public class Habitacion {
      * @return true si se eliminó el objeto, false si no se encontró.
      */
     public boolean eliminarObjeto(Objeto obj) {
-        for(int i = 0; i < objetos.length; i++) {
-            if(objetos[i] != null && objetos[i].equals(obj)) {
-                objetos[i] = null;
-                return true;
-            }
-        }
-
-        return false;
+    return objetos.remove(obj);
     }
 
     /**
@@ -70,7 +55,7 @@ public class Habitacion {
      * Obtiene los objetos presentes en la habitación.
      * @return Array de objetos en la habitación.
      */
-    public Objeto[] getObjetos() {
+    public List<Objeto> getObjetos() {
         return objetos;
     }
 
@@ -88,6 +73,9 @@ public class Habitacion {
         return null;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
 
 
 }
