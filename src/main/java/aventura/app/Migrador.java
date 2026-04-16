@@ -9,18 +9,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class Migrador {
-
-
 
 
     public static void migrador(String descripcion, Habitacion[] arrayHabitaciones) throws IOException {
 
         Map<String, Habitacion> salas = new HashMap<>();
 
-        for (Habitacion h : arrayHabitaciones){
-            if (h != null){
+        for (Habitacion h : arrayHabitaciones) {
+            if (h != null) {
                 salas.put(h.getNombre(), h);
             }
         }
@@ -32,9 +31,11 @@ public class Migrador {
         //Convertimos el objeto a una cadena de texto de JSON
         String json = gson.toJson(aventuraConfig);
 
-        Path ruta = Path.of("src/main/resources/aventura.json");
+        Properties props = new Properties();
 
-        Files.writeString(ruta, json);
+        props.load(Files.newBufferedReader(Path.of("config.properties")));
+        Path base = Path.of(props.getProperty("juego.directorio.base"));
+        Path file = base.resolve(props.getProperty("juego.archivo.base"));
 
 
     }
