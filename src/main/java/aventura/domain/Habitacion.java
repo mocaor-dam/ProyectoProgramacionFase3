@@ -1,13 +1,13 @@
 package aventura.domain;
 
 import aventura.exceptions.AventuraException;
-import java.util.LinkedList;
-import java.util.List;
+
+import java.util.*;
 
 public class Habitacion {
     private String descripcion;
     private List<Objeto> objetos; // Array de objetos reales, no Strings
-
+    private Map<String, String> salidas;
     /**
      * Constructor de la clase Habitacion.
      * @param desc Descripción de la habitación.
@@ -15,6 +15,7 @@ public class Habitacion {
     public Habitacion(String desc) {
         this.descripcion = desc;
         objetos=new LinkedList<>();
+        salidas =new HashMap<>();
     }
 
     /**
@@ -77,5 +78,7 @@ public class Habitacion {
         return descripcion;
     }
 
-
+    public Map<String, String> getSalidas() {
+        return salidas;
+    }
 }

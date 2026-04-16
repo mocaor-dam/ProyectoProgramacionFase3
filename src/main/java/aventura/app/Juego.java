@@ -61,6 +61,7 @@ public class Juego {
             aula103.agregarObjeto(new Item("Llave", "Una llave pequeña de metal.", true));
             aula103.agregarObjeto(new MangoRotoLlave());
             habitaciones.put("aula103", aula103);
+            aula103.getSalidas().put("pasillo","pasillo");
         } catch (AventuraException e) {
             System.err.println("Error al agregar objeto a la habitación: " + e.getMessage());
         }
@@ -69,6 +70,9 @@ public class Juego {
         try {
             pasillo.agregarObjeto(new Contenedor("Taquilla", "Una taquilla metálica cerrada.", true, "LLAVE123", new PaloRotoLlave()));
             habitaciones.put("pasillo", pasillo);
+            pasillo.getSalidas().put("aula 103","aula 103");
+            pasillo.getSalidas().put("aula 105","aula 105");
+
         } catch (AventuraException e) {
             System.err.println("Error al agregar objeto a la habitación: " + e.getMessage());
         }
@@ -81,6 +85,7 @@ public class Juego {
             aula105.agregarObjeto(new Contenedor("Cajón del escritorio", "Un cajón de madera que parece cerrado.", true, llavePequenia));
             aula105.agregarObjeto(new Contenedor("Cofre antiguo", "Un cofre de aspecto antiguo con un candado.", true, "LLAVEYZ", new Item("Mapa", "Un mapa del instituto.", true)));
             habitaciones.put("aula105", aula105);
+            aula105.getSalidas().put("pasillo","pasillo");
         } catch (AventuraException e) {
             System.err.println("Error al agregar objeto a la habitación: " + e.getMessage());
         }
