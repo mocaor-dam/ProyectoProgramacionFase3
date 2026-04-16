@@ -43,6 +43,7 @@ public class Juego {
         this.jugador = jugador;
         inicializarJuego();
         this.descripcionJuego = configuracion.getDescripcion();
+        this.configuracion = configuracion;
     }
 
     /**
