@@ -95,5 +95,6 @@ public class Jugador {
     }
 
     public void ir() {
+
     }
 }
