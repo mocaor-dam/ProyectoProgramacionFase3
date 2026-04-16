@@ -7,6 +7,7 @@ import aventura.exceptions.ObjetoNoCompatibleException;
 import aventura.io.MiEntradaSalida;
 
 import java.util.HashMap;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
 
@@ -43,13 +44,6 @@ public class Juego {
         habitaciones = new HashMap<>();
         this.jugador = jugador;
         inicializarJuego();
-    }
-
-    public static void main(String[] args) {
-        Juego juego = new Juego(new Jugador("Jugador1"));
-        juego.iniciar();
-        System.out.println("¡Gracias por jugar!");
-
     }
 
     /**
@@ -90,6 +84,23 @@ public class Juego {
         } catch (AventuraException e) {
             System.err.println("Error al agregar objeto a la habitación: " + e.getMessage());
         }
+    }
+
+
+    public static void main(String[] args) {
+        Juego juego = new Juego(new Jugador("Jugador1"));
+        juego.iniciar();
+
+
+
+        try {
+            Migrador.migrador(juego.descripcionJuego, Hashmap aqui);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("¡Gracias por jugar!");
+
     }
 
     public void iniciar() {
@@ -479,6 +490,15 @@ public class Juego {
         jugador.eliminarDeInventario(obj);
         // Intentamos borrar de la habitación
         habitaciones.get(jugador.getHabitacionActual()).eliminarObjeto(obj);
+    }
+
+    //Getters y Setters
+    public String getDescripcionJuego() {
+        return descripcionJuego;
+    }
+
+    public void setDescripcionJuego(String descripcionJuego) {
+        this.descripcionJuego = descripcionJuego;
     }
 
 }
