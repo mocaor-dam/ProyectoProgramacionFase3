@@ -1,94 +1,77 @@
 {
   "descripcion": "Estás solo en tu apartamento cuando algo imposible ocurre.\n\nSon las 10 de la mañana, pero la ciudad está sumida en una oscuridad espesa, como si el amanecer nunca hubiera llegado. La luz de la pantalla del móvil es lo único que rompe la penumbra de la habitación. Fuera, la calle está casi vacía, salvo por unas figuras que se mueven torpemente, sin rumbo, como sombras sin voluntad. No hablan, no gritan, solo deambulan… y eso hace que el silencio sea aún más inquietante.\n\nIntentas convencerte de que es un apagón, una avería masiva, algo que podrás ver luego en las noticias. Pero cuando apagas la luz del salón para coger tu mochila, escuchas un susurro que parece venir de detrás de las paredes, como si el edificio respirara muy despacio. La sensación de que alguien —o algo— te observa no desaparece.\n\nTu objetivo es simple en apariencia: salir del edificio y encontrar a alguien cuerdo. Pero para conseguirlo tendrás que explorar los apartamentos, registrar muebles, leer notas críticas y usar cualquier objeto que encuentres a tu favor. Algunas puertas se abrirán con facilidad, otras necesitarán ingenio, y otras quizás requieran algo más que una simple llave.\n\nCada decisión puede acercarte a la salida… o dejarte atrapado en la oscuridad del apagón.",
   "salas": {
-    "aula 103": {
-      "descripcion": "El aula 103. Es tu aula habitual. Hay una puerta a la DERECHA.",
+    "Apartamento 100": {
+      "nombre": "Apartamento 100",
+      "descripcion": "Estás en tu apartamento, el 100. Hay puertas a la DERECHA y a la IZQUIERDA que conducen a los apartamentos 101 y 102. La oscuridad del pasillo se cuela por la rendija de la puerta.",
       "objetos": [
         {
+          "type": "Mueble",
           "visible": true,
-          "nombre": "Estantería",
-          "descripcion": "Una estantería llena de libros y cuadernos."
+          "nombre": "armario",
+          "descripcion": "Un armario viejo, con la madera hinchada por la humedad."
         },
         {
+          "type": "Item",
           "visible": true,
-          "nombre": "Llave",
-          "descripcion": "Una llave pequeña de metal."
-        },
-        {
-          "visible": true,
-          "nombre": "Mango roto de llave",
-          "descripcion": "Un mango metálico roto de una llave"
+          "nombre": "reloj",
+          "descripcion": "Un reloj de bolsillo antiguo; su hora está parada en las 10:00 de la mañana."
         }
       ],
-      "nombre": "aula 103",
       "salidas": {
-        "derecha": "pasillo"
+        "derecha": "Apartamento 101",
+        "izquierda": "Apartamento 102"
       }
     },
-    "aula 105": {
-      "descripcion": "El aula 105. Hay una puerta a la IZQUIERDA por la que has entrado.",
+    "Apartamento 101": {
+      "nombre": "Apartamento 101",
+      "descripcion": "Estás en el apartamento 101. Hay una mesa en el centro de la sala. Sobre ella ves una pieza metálica alargada, como el mango de una llave rota.",
       "objetos": [
         {
-          "texto": "La llave está bajo la estantería.",
+          "type": "MangoRotoLlave",
           "visible": true,
-          "nombre": "Nota",
-          "descripcion": "Una nota escrita a mano"
-        },
-        {
-          "visible": true,
-          "nombre": "Escritorio",
-          "descripcion": "Un escritorio con varios papeles encima."
-        },
-        {
-          "abierto": false,
-          "contenido": {
-            "codigoSeguridad": "LLAVE123",
-            "visible": true,
-            "nombre": "Llave pequeña",
-            "descripcion": "Una pequeña llave de metal."
-          },
-          "visible": true,
-          "nombre": "Cajón del escritorio",
-          "descripcion": "Un cajón de madera que parece cerrado."
-        },
-        {
-          "abierto": false,
-          "codigoNecesario": "LLAVEYZ",
-          "contenido": {
-            "visible": true,
-            "nombre": "Mapa",
-            "descripcion": "Un mapa del instituto."
-          },
-          "visible": true,
-          "nombre": "Cofre antiguo",
-          "descripcion": "Un cofre de aspecto antiguo con un candado."
+          "nombre": "mango",
+          "descripcion": "La parte alargada de una llave, sin la cabeza."
         }
       ],
-      "nombre": "aula 105",
       "salidas": {
-        "izquierda": "pasillo"
+        "izquierda": "Apartamento 100"
       }
     },
-    "pasillo": {
-      "descripcion": "El pasillo principal. Hay puertas a la DERECHA y a la IZQUIERDA.",
+    "Apartamento 102": {
+      "nombre": "Apartamento 102",
+      "descripcion": "Estás en el apartamento 102. La habitación está casi vacía...",
       "objetos": [
         {
-          "abierto": false,
-          "codigoNecesario": "LLAVE123",
-          "contenido": {
-            "visible": true,
-            "nombre": "Pequeño palo metálico con aspas",
-            "descripcion": "Un pequeño palo metálico con aspas"
-          },
+          "type": "Contenedor",
           "visible": true,
-          "nombre": "Taquilla",
-          "descripcion": "Una taquilla metálica cerrada."
+          "nombre": "cofre",
+          "descripcion": "Un cofre de madera con una cerradura oxidada.",
+          "abierto": false,
+          "codigoNecesario": "A-101",
+          "contenido": {
+            "type": "Item",
+            "visible": true,
+            "nombre": "botiquin",
+            "descripcion": "Un pequeño botiquín con vendas y desinfectante."
+          }
+        },
+        {
+          "type": "Nota",
+          "visible": true,
+          "nombre": "nota",
+          "descripcion": "Un papel arrugado en el suelo, junto al cofre.",
+          "texto": "Si estás leyendo esto, el apagón ya habrá empezado.\nLa llave no puede estar entera o ellos la encontrarán.\nUne el mango que escondí en el 101 con el palo que dejé aquí.\nSolo entonces el cofre responderá al código A-101."
+        },
+        {
+          "type": "PaloRotoLlave",
+          "visible": true,
+          "nombre": "palo",
+          "descripcion": "Un pequeño trozo de metal con aspas, parece la cabeza de una llave."
         }
       ],
-      "nombre": "pasillo",
       "salidas": {
-        "izquierda": "aula103",
-        "derecha": "aula105"
+        "derecha": "Apartamento 100"
       }
     }
   }
