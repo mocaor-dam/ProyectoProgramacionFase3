@@ -59,7 +59,7 @@ public class Juego {
                 "Pero algo pasó. Lo último que recuerdas es que sentiste mucho frío y todo se volvió oscuro. Ahora estás en tu clase, pero es de noche y el instituto está cerrado." +
                 "¿Nadie te ha visto? ¿Por qué las limpiadoras no te han despertado?";
         //Cremos el escenario
-        Habitacion aula103 = new Habitacion("El aula 103. Es tu aula habitual. Hay una puerta a la DERECHA.", "aula 103");
+        Habitacion aula103= new Habitacion("El aula 103. Es tu aula habitual. Hay una puerta a la DERECHA.", "aula103");
         try {
             aula103.agregarObjeto(new Mueble("Estantería", "Una estantería llena de libros y cuadernos.", true));
             aula103.agregarObjeto(new Item("Llave", "Una llave pequeña de metal.", true));
@@ -108,7 +108,6 @@ public class Juego {
             config = cargador.cargarMundoBase();
 
             Juego juego = new Juego(new Jugador("Jugador1"), config);
-            Habitacion[] arrayHabitaciones = juego.habitaciones.values().toArray(new Habitacion[0]);
             juego.iniciar();
 
         } catch (IOException e) {
@@ -144,7 +143,7 @@ public class Juego {
             switch (comando) {
                 case "mirar" -> mostrarInfoHabitacion();
                 case "inventario" -> mostrarObjetosInventario();
-                case "ir" -> jugador.ir();
+                case "ir" -> cdmIr();
                 case "coger" -> cmdCoger();
                 case "examinar" -> cmdExaminar();
                 case "abrir" -> cmdAbrir();
@@ -517,4 +516,26 @@ public class Juego {
         this.descripcionJuego = descripcionJuego;
     }
 
+    public void cdmIr() {
+        Habitacion actual = habitaciones.get(jugador.getHabitacionActual());
+
+        System.out.println("Estás en: " + actual.getDescripcion());
+        System.out.println("Salidas disponibles: " + actual.getSalidas().keySet());
+
+        String direccion = MiEntradaSalida
+                .solicitarCadena("¿Dirección?")
+                .trim()
+                .toLowerCase();
+
+        String destinoId = actual.getSalidas().get(direccion);
+
+        if (destinoId == null) {
+            System.out.println("No puedes ir en esa dirección.");
+            return;
+        }
+
+        jugador.setHabitacionActual(destinoId);
+
+        System.out.println(habitaciones.get(destinoId).getDescripcion());
+    }
 }

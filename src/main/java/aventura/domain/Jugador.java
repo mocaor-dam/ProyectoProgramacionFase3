@@ -93,8 +93,4 @@ public class Jugador {
         }
         return null; // No lo tienes encima
     }
-
-    public void ir() {
-
-    }
 }
