@@ -1,0 +1,95 @@
+{
+  "descripcion": "No sabes qué ha pasado. Justo cuando terminabas las clases te quedaste el último como siempre recogiendo tus cosas. Pero algo pasó. Lo último que recuerdas es que sentiste mucho frío y todo se volvió oscuro. Ahora estás en tu clase, pero es de noche y el instituto está cerrado.¿Nadie te ha visto? ¿Por qué las limpiadoras no te han despertado?",
+  "salas": {
+    "aula 103": {
+      "descripcion": "El aula 103. Es tu aula habitual. Hay una puerta a la DERECHA.",
+      "objetos": [
+        {
+          "visible": true,
+          "nombre": "Estantería",
+          "descripcion": "Una estantería llena de libros y cuadernos."
+        },
+        {
+          "visible": true,
+          "nombre": "Llave",
+          "descripcion": "Una llave pequeña de metal."
+        },
+        {
+          "visible": true,
+          "nombre": "Mango roto de llave",
+          "descripcion": "Un mango metálico roto de una llave"
+        }
+      ],
+      "nombre": "aula 103",
+      "salidas": {
+        "derecha": "pasillo"
+      }
+    },
+    "aula 105": {
+      "descripcion": "El aula 105. Hay una puerta a la IZQUIERDA por la que has entrado.",
+      "objetos": [
+        {
+          "texto": "La llave está bajo la estantería.",
+          "visible": true,
+          "nombre": "Nota",
+          "descripcion": "Una nota escrita a mano"
+        },
+        {
+          "visible": true,
+          "nombre": "Escritorio",
+          "descripcion": "Un escritorio con varios papeles encima."
+        },
+        {
+          "abierto": false,
+          "contenido": {
+            "codigoSeguridad": "LLAVE123",
+            "visible": true,
+            "nombre": "Llave pequeña",
+            "descripcion": "Una pequeña llave de metal."
+          },
+          "visible": true,
+          "nombre": "Cajón del escritorio",
+          "descripcion": "Un cajón de madera que parece cerrado."
+        },
+        {
+          "abierto": false,
+          "codigoNecesario": "LLAVEYZ",
+          "contenido": {
+            "visible": true,
+            "nombre": "Mapa",
+            "descripcion": "Un mapa del instituto."
+          },
+          "visible": true,
+          "nombre": "Cofre antiguo",
+          "descripcion": "Un cofre de aspecto antiguo con un candado."
+        }
+      ],
+      "nombre": "aula 105",
+      "salidas": {
+        "izquierda": "pasillo"
+      }
+    },
+    "pasillo": {
+      "descripcion": "El pasillo principal. Hay puertas a la DERECHA y a la IZQUIERDA.",
+      "objetos": [
+        {
+          "abierto": false,
+          "codigoNecesario": "LLAVE123",
+          "contenido": {
+            "visible": true,
+            "nombre": "Pequeño palo metálico con aspas",
+            "descripcion": "Un pequeño palo metálico con aspas"
+          },
+          "visible": true,
+          "nombre": "Taquilla",
+          "descripcion": "Una taquilla metálica cerrada."
+        }
+      ],
+      "nombre": "pasillo",
+      "salidas": {
+        "izquierda": "aula103",
+        "derecha": "aula105"
+      }
+    }
+  }
+}
