@@ -31,6 +31,8 @@ public class Juego {
     // Variable que guarda la posición actual del jugador
     private Jugador jugador;
 
+    private AventuraConfig configuracion;
+
     // --- FIN DE LA DEFINICIÓN DE DATOS ---
 
     /**
@@ -38,12 +40,14 @@ public class Juego {
      *
      * @param jugador El jugador que participa en el juego.
      */
-    public Juego(Jugador jugador) {
+    public Juego(Jugador jugador, AventuraConfig configuracion) {
         // Inicialización del mapa de habitaciones
 
         habitaciones = new HashMap<>();
         this.jugador = jugador;
         inicializarJuego();
+        this.descripcionJuego = configuracion.getDescripcion();
+        this.configuracion = configuracion;
     }
 
     /**
@@ -91,9 +95,17 @@ public class Juego {
         Juego juego = new Juego(new Jugador("Jugador1"));
         juego.iniciar();
 
+        CargadorAventura cargador = new CargadorAventura();
+        AventuraConfig config = null;
 
 
         try {
+
+            cargador.cargarConfiguracion();
+            config = cargador.cargarMundoBase();
+
+            Juego juego = new Juego(new Jugador("Jugador1"), config);
+            juego.iniciar();
             Migrador.migrador(juego.descripcionJuego, Hashmap aqui);
         } catch (IOException e) {
             System.out.println(e.getMessage());
