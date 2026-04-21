@@ -70,7 +70,7 @@ public class Juego {
             Jugador p1 = new Jugador("Jugador1");
             p1.setHabitacionActual("Apartamento 100");
 
-            Juego juego = new Juego(new Jugador("Jugador1"), config);
+            Juego juego = new Juego(p1, config);
             juego.iniciar();
 
         } catch (IOException e) {
