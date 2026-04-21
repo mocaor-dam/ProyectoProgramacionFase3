@@ -45,55 +45,11 @@ public class Juego {
 
         habitaciones = new HashMap<>();
         this.jugador = jugador;
-        inicializarJuego();
         this.descripcionJuego = configuracion.getDescripcion();
         this.configuracion = configuracion;
     }
 
-    /**
-     * Inicializa el juego creando las habitaciones y los objetos.
-     */
-    private void inicializarJuego() {
 
-        descripcionJuego = "No sabes qué ha pasado. Justo cuando terminabas las clases te quedaste el último como siempre recogiendo tus cosas. " +
-                "Pero algo pasó. Lo último que recuerdas es que sentiste mucho frío y todo se volvió oscuro. Ahora estás en tu clase, pero es de noche y el instituto está cerrado." +
-                "¿Nadie te ha visto? ¿Por qué las limpiadoras no te han despertado?";
-        //Cremos el escenario
-        Habitacion aula103= new Habitacion("El aula 103. Es tu aula habitual. Hay una puerta a la DERECHA.", "aula103");
-        try {
-            aula103.agregarObjeto(new Mueble("Estantería", "Una estantería llena de libros y cuadernos.", true));
-            aula103.agregarObjeto(new Item("Llave", "Una llave pequeña de metal.", true));
-            aula103.agregarObjeto(new MangoRotoLlave());
-            aula103.getSalidas().put("derecha", "pasillo");
-            habitaciones.put("aula103", aula103); //añadimos las salidas
-        } catch (AventuraException e) {
-            System.err.println("Error al agregar objeto a la habitación: " + e.getMessage());
-        }
-
-        Habitacion pasillo = new Habitacion("El pasillo principal. Hay puertas a la DERECHA y a la IZQUIERDA.", "pasillo");
-        try {
-            pasillo.agregarObjeto(new Contenedor("Taquilla", "Una taquilla metálica cerrada.", true, "LLAVE123", new PaloRotoLlave()));
-            pasillo.getSalidas().put("izquierda", "aula103");
-            pasillo.getSalidas().put("derecha", "aula105");
-            habitaciones.put("pasillo", pasillo);
-        } catch (AventuraException e) {
-            System.err.println("Error al agregar objeto a la habitación: " + e.getMessage());
-        }
-
-        Habitacion aula105 = new Habitacion("El aula 105. Hay una puerta a la IZQUIERDA por la que has entrado.",  "aula 105");
-        try {
-            aula105.agregarObjeto(new Nota("Nota", "Una nota escrita a mano", true, "La llave está bajo la estantería."));
-            aula105.agregarObjeto(new Mueble("Escritorio", "Un escritorio con varios papeles encima.", true));
-            Llave llavePequenia = new Llave("Llave pequeña", "Una pequeña llave de metal.", true, "LLAVE123");
-            aula105.agregarObjeto(new Contenedor("Cajón del escritorio", "Un cajón de madera que parece cerrado.", true, llavePequenia));
-            aula105.agregarObjeto(new Contenedor("Cofre antiguo", "Un cofre de aspecto antiguo con un candado.", true, "LLAVEYZ", new Item("Mapa", "Un mapa del instituto.", true)));
-            aula105.getSalidas().put("izquierda", "pasillo");
-
-            habitaciones.put("aula105", aula105);
-        } catch (AventuraException e) {
-            System.err.println("Error al agregar objeto a la habitación: " + e.getMessage());
-        }
-    }
 
 
     public static void main(String[] args) {
