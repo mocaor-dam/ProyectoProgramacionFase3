@@ -267,7 +267,11 @@ public class Juego {
      * Muestra la información de la habitación actual.
      */
     private void mostrarInfoHabitacion() {
+
         System.out.println(habitaciones.get(jugador.getHabitacionActual()).getDescripcion());
+        //Mostramos los objetos de la habitacion actual
+        mostrarObjetosHabitacion();
+
     }
 
 
@@ -280,15 +284,26 @@ public class Juego {
         assert objetoACoger != null : "El objeto a coger no puede ser null";
 
         boolean objetoEncontrado = false;
+
+        // Usamos el bucle tal cual lo tenías
         for (Objeto i : habitaciones.get(jugador.getHabitacionActual()).getObjetos()) {
             if (i.equals(objetoACoger)) {
                 try {
                     jugador.coger(objetoACoger);
+
+
+                    // Solo lo quitamos de la habitación si el jugador ha podido cogerlo
+                    habitaciones.get(jugador.getHabitacionActual()).getObjetos().remove(i);
+
+                    objetoEncontrado = true;
+                    System.out.println("Has cogido: " + objetoACoger.getNombre());
+
+                    break;
+
                 } catch (AventuraException e) {
+                    // Si el inventario está lleno, salta aquí y NO se borra de la habitación
                     System.out.println(e.getMessage());
                 }
-                habitaciones.get(jugador.getHabitacionActual()).getObjetos().remove(i);
-                objetoEncontrado = true;
             }
         }
 
@@ -500,5 +515,7 @@ public class Juego {
         jugador.setHabitacionActual(destinoId);
 
         System.out.println(habitaciones.get(destinoId).getDescripcion());
+
+        mostrarInfoHabitacion();
     }
 }
