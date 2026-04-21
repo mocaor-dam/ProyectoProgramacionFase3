@@ -31,13 +31,18 @@ public class Migrador {
         //Convertimos el objeto a una cadena de texto de JSON
         String json = gson.toJson(aventuraConfig);
 
-        Properties props = new Properties();
+        try (java.io.BufferedReader reader = Files.newBufferedReader(Path.of("config.properties"))) {
 
-        props.load(Files.newBufferedReader(Path.of("config.properties")));
-        Path base = Path.of(props.getProperty("juego.directorio.base"));
-        Path file = base.resolve(props.getProperty("juego.archivo.base"));
+            Properties props = new Properties();
+            props.load(reader);
 
+            Path base = Path.of(props.getProperty("juego.directorio.base"));
+            Path file = base.resolve(props.getProperty("juego.archivo.base"));
 
+            Files.createDirectories(base); //crea carpeta si no existe
+            Files.writeString(file, json); //escribe el JSON
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
-
 }

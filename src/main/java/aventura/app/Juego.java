@@ -45,55 +45,17 @@ public class Juego {
 
         habitaciones = new HashMap<>();
         this.jugador = jugador;
-        inicializarJuego();
         this.descripcionJuego = configuracion.getDescripcion();
         this.configuracion = configuracion;
+
+        //Asignamos el mapa de salas que viene del JSON a nuestro atributo
+        this.habitaciones = configuracion.getSalas();
     }
 
-    /**
-     * Inicializa el juego creando las habitaciones y los objetos.
-     */
-    private void inicializarJuego() {
 
-        descripcionJuego = "No sabes qué ha pasado. Justo cuando terminabas las clases te quedaste el último como siempre recogiendo tus cosas. " +
-                "Pero algo pasó. Lo último que recuerdas es que sentiste mucho frío y todo se volvió oscuro. Ahora estás en tu clase, pero es de noche y el instituto está cerrado." +
-                "¿Nadie te ha visto? ¿Por qué las limpiadoras no te han despertado?";
-        //Cremos el escenario
-        Habitacion aula103 = new Habitacion("El aula 103. Es tu aula habitual. Hay una puerta a la DERECHA.");
-        try {
-            aula103.agregarObjeto(new Mueble("Estantería", "Una estantería llena de libros y cuadernos.", true));
-            aula103.agregarObjeto(new Item("Llave", "Una llave pequeña de metal.", true));
-            aula103.agregarObjeto(new MangoRotoLlave());
-            habitaciones.put("aula103", aula103);
-        } catch (AventuraException e) {
-            System.err.println("Error al agregar objeto a la habitación: " + e.getMessage());
-        }
-
-        Habitacion pasillo = new Habitacion("El pasillo principal. Hay puertas a la DERECHA y a la IZQUIERDA.");
-        try {
-            pasillo.agregarObjeto(new Contenedor("Taquilla", "Una taquilla metálica cerrada.", true, "LLAVE123", new PaloRotoLlave()));
-            habitaciones.put("pasillo", pasillo);
-        } catch (AventuraException e) {
-            System.err.println("Error al agregar objeto a la habitación: " + e.getMessage());
-        }
-
-        Habitacion aula105 = new Habitacion("El aula 105. Hay una puerta a la IZQUIERDA por la que has entrado.");
-        try {
-            aula105.agregarObjeto(new Nota("Nota", "Una nota escrita a mano", true, "La llave está bajo la estantería."));
-            aula105.agregarObjeto(new Mueble("Escritorio", "Un escritorio con varios papeles encima.", true));
-            Llave llavePequenia = new Llave("Llave pequeña", "Una pequeña llave de metal.", true, "LLAVE123");
-            aula105.agregarObjeto(new Contenedor("Cajón del escritorio", "Un cajón de madera que parece cerrado.", true, llavePequenia));
-            aula105.agregarObjeto(new Contenedor("Cofre antiguo", "Un cofre de aspecto antiguo con un candado.", true, "LLAVEYZ", new Item("Mapa", "Un mapa del instituto.", true)));
-            habitaciones.put("aula105", aula105);
-        } catch (AventuraException e) {
-            System.err.println("Error al agregar objeto a la habitación: " + e.getMessage());
-        }
-    }
 
 
     public static void main(String[] args) {
-        Juego juego = new Juego(new Jugador("Jugador1"));
-        juego.iniciar();
 
         CargadorAventura cargador = new CargadorAventura();
         AventuraConfig config = null;
@@ -104,9 +66,13 @@ public class Juego {
             cargador.cargarConfiguracion();
             config = cargador.cargarMundoBase();
 
-            Juego juego = new Juego(new Jugador("Jugador1"), config);
+
+            Jugador p1 = new Jugador("Jugador1");
+            p1.setHabitacionActual("Apartamento 100");
+
+            Juego juego = new Juego(p1, config);
             juego.iniciar();
-            Migrador.migrador(juego.descripcionJuego, Hashmap aqui);
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -140,7 +106,7 @@ public class Juego {
             switch (comando) {
                 case "mirar" -> mostrarInfoHabitacion();
                 case "inventario" -> mostrarObjetosInventario();
-                case "ir" -> jugador.ir();
+                case "ir" -> cdmIr();
                 case "coger" -> cmdCoger();
                 case "examinar" -> cmdExaminar();
                 case "abrir" -> cmdAbrir();
@@ -301,7 +267,11 @@ public class Juego {
      * Muestra la información de la habitación actual.
      */
     private void mostrarInfoHabitacion() {
+
         System.out.println(habitaciones.get(jugador.getHabitacionActual()).getDescripcion());
+        //Mostramos los objetos de la habitacion actual
+        mostrarObjetosHabitacion();
+
     }
 
 
@@ -314,15 +284,26 @@ public class Juego {
         assert objetoACoger != null : "El objeto a coger no puede ser null";
 
         boolean objetoEncontrado = false;
+
+        // Usamos el bucle tal cual lo tenías
         for (Objeto i : habitaciones.get(jugador.getHabitacionActual()).getObjetos()) {
             if (i.equals(objetoACoger)) {
                 try {
                     jugador.coger(objetoACoger);
+
+
+                    // Solo lo quitamos de la habitación si el jugador ha podido cogerlo
+                    habitaciones.get(jugador.getHabitacionActual()).getObjetos().remove(i);
+
+                    objetoEncontrado = true;
+                    System.out.println("Has cogido: " + objetoACoger.getNombre());
+
+                    break;
+
                 } catch (AventuraException e) {
+                    // Si el inventario está lleno, salta aquí y NO se borra de la habitación
                     System.out.println(e.getMessage());
                 }
-                habitaciones.get(jugador.getHabitacionActual()).getObjetos().remove(i);
-                objetoEncontrado = true;
             }
         }
 
@@ -513,4 +494,28 @@ public class Juego {
         this.descripcionJuego = descripcionJuego;
     }
 
+    public void cdmIr() {
+        Habitacion actual = habitaciones.get(jugador.getHabitacionActual());
+
+        System.out.println("Estás en: " + actual.getDescripcion());
+        System.out.println("Salidas disponibles: " + actual.getSalidas().keySet());
+
+        String direccion = MiEntradaSalida
+                .solicitarCadena("¿Dirección?")
+                .trim()
+                .toLowerCase();
+
+        String destinoId = actual.getSalidas().get(direccion);
+
+        if (destinoId == null) {
+            System.out.println("No puedes ir en esa dirección.");
+            return;
+        }
+
+        jugador.setHabitacionActual(destinoId);
+
+        
+
+        mostrarInfoHabitacion();
+    }
 }
