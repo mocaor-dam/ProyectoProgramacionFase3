@@ -514,7 +514,7 @@ public class Juego {
 
         jugador.setHabitacionActual(destinoId);
 
-        System.out.println(habitaciones.get(destinoId).getDescripcion());
+        
 
         mostrarInfoHabitacion();
     }
