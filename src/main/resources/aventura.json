@@ -6,13 +6,13 @@
       "descripcion": "Estás en tu apartamento, el 100. Hay puertas a la DERECHA y a la IZQUIERDA que conducen a los apartamentos 101 y 102. La oscuridad del pasillo se cuela por la rendija de la puerta.",
       "objetos": [
         {
-          "type": "Mueble",
+          "tipo": "Mueble",
           "visible": true,
           "nombre": "armario",
           "descripcion": "Un armario viejo, con la madera hinchada por la humedad."
         },
         {
-          "type": "Item",
+          "tipo": "Item",
           "visible": true,
           "nombre": "reloj",
           "descripcion": "Un reloj de bolsillo antiguo; su hora está parada en las 10:00 de la mañana."
@@ -28,7 +28,7 @@
       "descripcion": "Estás en el apartamento 101. Hay una mesa en el centro de la sala. Sobre ella ves una pieza metálica alargada, como el mango de una llave rota.",
       "objetos": [
         {
-          "type": "MangoRotoLlave",
+          "tipo": "MangoRotoLlave",
           "visible": true,
           "nombre": "mango",
           "descripcion": "La parte alargada de una llave, sin la cabeza."
@@ -43,28 +43,28 @@
       "descripcion": "Estás en el apartamento 102. La habitación está casi vacía...",
       "objetos": [
         {
-          "type": "Contenedor",
+          "tipo": "Contenedor",
           "visible": true,
           "nombre": "cofre",
           "descripcion": "Un cofre de madera con una cerradura oxidada.",
           "abierto": false,
           "codigoNecesario": "A-101",
           "contenido": {
-            "type": "Item",
+            "tipo": "Item",
             "visible": true,
             "nombre": "botiquin",
             "descripcion": "Un pequeño botiquín con vendas y desinfectante."
           }
         },
         {
-          "type": "Nota",
+          "tipo": "Nota",
           "visible": true,
           "nombre": "nota",
           "descripcion": "Un papel arrugado en el suelo, junto al cofre.",
           "texto": "Si estás leyendo esto, el apagón ya habrá empezado.\nLa llave no puede estar entera o ellos la encontrarán.\nUne el mango que escondí en el 101 con el palo que dejé aquí.\nSolo entonces el cofre responderá al código A-101."
         },
         {
-          "type": "PaloRotoLlave",
+          "tipo": "PaloRotoLlave",
           "visible": true,
           "nombre": "palo",
           "descripcion": "Un pequeño trozo de metal con aspas, parece la cabeza de una llave."

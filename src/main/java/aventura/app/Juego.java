@@ -47,6 +47,9 @@ public class Juego {
         this.jugador = jugador;
         this.descripcionJuego = configuracion.getDescripcion();
         this.configuracion = configuracion;
+
+        //Asignamos el mapa de salas que viene del JSON a nuestro atributo
+        this.habitaciones = configuracion.getSalas();
     }
 
 
@@ -63,7 +66,11 @@ public class Juego {
             cargador.cargarConfiguracion();
             config = cargador.cargarMundoBase();
 
-            Juego juego = new Juego(new Jugador("Jugador1"), config);
+
+            Jugador p1 = new Jugador("Jugador1");
+            p1.setHabitacionActual("Apartamento 100");
+
+            Juego juego = new Juego(p1, config);
             juego.iniciar();
 
         } catch (IOException e) {
