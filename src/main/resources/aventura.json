@@ -8,7 +8,7 @@
         {
           "tipo": "Mueble",
           "visible": true,
-          "nombre": "armario",
+            "nombre": "Cama",
           "descripcion": "Un armario viejo, con la madera hinchada por la humedad."
         },
         {
