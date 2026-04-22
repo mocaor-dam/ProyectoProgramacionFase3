@@ -4,7 +4,7 @@ import aventura.exceptions.ObjetoNoCompatibleException;
 
 public class MangoRotoLlave extends Item implements Combinable {
 
-    public static final String NOMBRE = "Mango roto de llave";
+    public static final String NOMBRE = "mango";
     private static final String DESCRIPCION = "Un mango metálico roto de una llave";
     private static final boolean VISIBLE = true;
 
