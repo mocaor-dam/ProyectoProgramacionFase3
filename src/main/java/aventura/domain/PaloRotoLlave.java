@@ -3,10 +3,10 @@ package aventura.domain;
 import aventura.exceptions.ObjetoNoCompatibleException;
 
 public class PaloRotoLlave extends Item implements Combinable {
-    public static final String NOMBRE = "Pequeño palo metálico con aspas";
+    public static final String NOMBRE = "palo";
     private static final String DESCRIPCION = "Un pequeño palo metálico con aspas";
     private static final boolean VISIBLE = true;
-    public static final String CODIGO_LLAVE_RESULTANTE = "LLAVEYZ";
+    public static final String CODIGO_LLAVE_RESULTANTE = "A-101";
 
     /**
      * Constructor de la clase PaloRotoLlave.
@@ -21,7 +21,7 @@ public class PaloRotoLlave extends Item implements Combinable {
             throw new ObjetoNoCompatibleException("No se puede combinar " + this.getNombre() + " con " + otro.getNombre());
         } else {
             if (otro.getNombre().equalsIgnoreCase(MangoRotoLlave.NOMBRE)) {
-                return new Llave("Llave violeta", "Una llave mediana de color violeta", true, CODIGO_LLAVE_RESULTANTE);
+                return new Llave("Llave Extraña", "Una llave extraña con una forma un tanto peculiar...", true, CODIGO_LLAVE_RESULTANTE);
             } else {
                 throw new ObjetoNoCompatibleException("No se puede combinar " + this.getNombre() + " con " + otro.getNombre());
             }
